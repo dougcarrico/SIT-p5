@@ -14,7 +14,7 @@ let rotAcel = .1;
 
 function preload() {
   // Load model with normalise parameter set to true
-  teapot = loadModel('assets/SOMA.obj', true);
+  teapot = loadModel('assets/soma.obj', true);
   font = loadFont('assets/Quicksand-Regular.otf');
 }
 
@@ -39,6 +39,7 @@ function draw() {
   // lights();
   fill(255);
 
+
   if (recording){
   debugger;  
   micLevel = mic.getLevel()*10;
@@ -54,18 +55,9 @@ function draw() {
       scroll -=.05;
     }
 
+  } else {
+    text('aperte m para ativar o microfone!', windowWidth/2, windowHeight/2);
   }
-
-  
-  // textSize(32);
-  // fill(0);
-  // textFont(font);
-  // text("frequency"+ rotAcel, -200,-200);
-  // text("rotX: "+ rotX , -300, -300);
-  // text("micLevel: "+ micLevel , -400, -400);
-    
-  
-  
 
   push();
   scale(normalizedScroll); // Scaled to make model fit into canvas

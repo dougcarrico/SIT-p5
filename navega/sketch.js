@@ -1,5 +1,5 @@
 let teapot;
-let scroll = 2;
+let scroll = 1;
 let normalizedScroll = - scroll;
 let rotX = 0;
 let rotY = 90;
@@ -25,8 +25,6 @@ function draw() {
   background(255, 255, 255);
   normalizedScroll = - scroll
   
-  // ambientLight(200, 200, 200);
-  // pointLight(255, 255, 255, width / 2, height / 2, 800);
   lights();
   fill(255);
   
@@ -39,7 +37,6 @@ function draw() {
   fill(23, 126, 230);
   model(teapot);
   pop();
-  
 
   if (mouseIsPressed) {
     if (mouseButton == LEFT) {

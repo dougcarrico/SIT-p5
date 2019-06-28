@@ -35,13 +35,13 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
+  frameRate(60);
   mic = new p5.AudioIn();
   fft = new p5.FFT();
   fft.setInput(mic);
   
 
-  quantLetra = int(width / 24); // Atribui a quantidade de letras possíveis na tela
+  quantLetra = int(width/10); // Atribui a quantidade de letras possíveis na tela
   caracteres = new Array(quantLetra);
 
   rPalavra = palavras[int(random(0, palavras.length))]; //randomiza uma palavra do array de palavras
@@ -52,10 +52,14 @@ function setup() {
 function draw() {
 
   background(255);
+  showGUI();
 
   if (recording) {
     micLevel = mic.getLevel() * 1000; //multiplica o valor de fAmp por 1000 e coloca em "amp"
     frequency = 1; //find note function
+    print(quantLetra);
+  print(cCount);
+
   } else {
     // micLevel = 0;
     // frequency = 0;
@@ -80,16 +84,23 @@ function draw() {
     setLetra(); // seta a letra a ser mostrada
 
     createLetra(); // Cria o objeto com a letra e peso de fonte
+
+
   } else {
     delayLetra++;
   }
 
   display(); // Mostra e move as letras na tela
 
-  if (mostraDados) {
-    showGUI();
-  }
+  countLetra();
+}
 
+function countLetra(){
+  if (cCount == quantLetra) {
+    cCount = 0;
+  } else {
+    cCount ++;
+  }
 }
 
 
@@ -118,29 +129,29 @@ function setLetra() {
 function createLetra() {
 
   // Se a frequência for menor que 500hz, a fonte é bold
-  if (frequency < 500) {
+  if (frequency <= 500) {
     caracteres[cCount] = new Letra(letra, fontBold);
-
-    cCount++;
   }
 
   // Se a frequência for maior que 500hz e menor que 1500hz, a fonte é regular
   else if (frequency > 500 && frequency < 1500) {
-
     caracteres[cCount] = new Letra(letra, fontRegular);
-
-    cCount++;
+    //cCount++;
   }
 
   // Se a frequência for maior que 1500hz, a fonte é bold
-  else if (frequency > 1500) {
+  else if (frequency >= 1500) {
     caracteres[cCount] = new Letra(letra, fontLight);
-    cCount++;
+    //cCount++;
   }
 
-  if (cCount == quantLetra) {
-    cCount = 0;
-  }
+
+}
+
+function setMaxDelayLetra() {
+  print(caracteres[cCount].largura);
+  maxDelayLetra = caracteres[cCount].largura/10;
+  print("maxDelayLetra "+ maxDelayLetra);
 }
 
 // Mostra as letras na tela
@@ -169,7 +180,7 @@ function showGUI() {
   text("Freq: " + frequency + " hz", 10, height - 60);
 
   //Superior esquerdo
-  text("FPS: " + frameRate, 10, 20);
+  text("FPS: " + getFrameRate(), 10, 20);
   text("Delay: " + delayPalavra, 10, 40);
   text("DelayLetra: " + delayLetra, 10, 60);
 
@@ -232,7 +243,7 @@ class Letra {
     this.x = -10;
     this.y = height / 2;
     this.t = 0;
-    this.letra;
+    //this.letra;
     this.fonte;
     this.A = micLevel * 2; // amplitude da ondulação
     this.f; //frequência da ondulação
@@ -240,6 +251,7 @@ class Letra {
     this.g = int(frequency);
     this.letra = letraTemp;
     this.fonte = fonteTemp;
+    this.largura;
     this.setFreq();
 
   }
@@ -247,7 +259,8 @@ class Letra {
   show() {
     textFont(this.fonte);
     textSize(this.tamanho);
-
+    this.largura = textWidth(this.letra);
+    
     fill(23, 126, 230);
 
     // Se a letra for "I" adiciona um espaço para arrumar o kerning
@@ -255,6 +268,7 @@ class Letra {
       text(this.letra, this.x + 4, this.y);
     } else {
       text(this.letra, this.x, this.y);
+      rect(this.x, this.y, this.largura, 10);
     }
   }
 
@@ -279,5 +293,9 @@ class Letra {
     if (frequency > 1500) {
       this.f = 10 + frequency / 1000;
     }
+  }
+
+  getLargura() {
+    return this.largura;
   }
 }

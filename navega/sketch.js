@@ -8,7 +8,7 @@ let count = 0;
 
 function preload() {
   // Load model with normalise parameter set to true
-  teapot = loadModel('https://raw.githubusercontent.com/dougcarrico/SIT-p5/master/navega/assets/SOMA.obj', true);
+  teapot = loadModel('assets/soma.obj', true);
 }
 
 function setup() {

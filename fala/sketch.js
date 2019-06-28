@@ -57,10 +57,9 @@ function draw() {
     micLevel = mic.getLevel() * 1000; //multiplica o valor de fAmp por 1000 e coloca em "amp"
     frequency = 1; //find note function
   } else {
-    micLevel = 0;
-    frequency = 0;
+    // micLevel = 0;
+    // frequency = 0;
   }
-
 
   // Quando o contador chegar no tempo de delay, troca a palavra que cai
   if (delayPalavra == maxDelayPalavra) {
@@ -213,6 +212,16 @@ function keyTyped() {
       recording = false;
     }
 
+  }
+}
+
+function mouseClicked() {
+  if (!recording) {
+    mic.start();
+    recording = true;
+  } else {
+    mic.stop();
+    recording = false;
   }
 }
 

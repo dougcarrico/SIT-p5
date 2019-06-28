@@ -90,6 +90,16 @@ function keyTyped() {
   }
 }
 
+function mouseClicked() {
+  if (!recording) {
+    mic.start();
+    recording = true;
+  } else {
+    mic.stop();
+    recording = false;
+  }
+}
+
 function touchStarted() {
   getAudioContext().resume()
 }

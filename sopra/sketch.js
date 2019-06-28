@@ -14,7 +14,7 @@ let rotAcel = .1;
 
 function preload() {
   // Load model with normalise parameter set to true
-  teapot = loadModel('assets/soma.obj', true);
+  teapot = loadModel('assets/SOMA.obj', true);
   font = loadFont('assets/Quicksand-Regular.otf');
 }
 

@@ -8,7 +8,7 @@ let count = 0;
 
 function preload() {
   // Load model with normalise parameter set to true
-  teapot = loadModel('/assets/soma.obj', true);
+  teapot = loadModel('assets/soma.obj', true);
 }
 
 function setup() {

@@ -26,7 +26,10 @@ let palavraIndex;
 let delayLetra = 0;
 let maxDelayLetra = 5;
 let mostraDados = false;
-let start;
+// let start;
+let button;
+let buttonWidth = 80;
+let buttonHeight = 40;
 
 function preload() {
   fontBold = loadFont("assets/OpenSans-Bold.ttf");
@@ -40,7 +43,19 @@ function setup() {
   mic = new p5.AudioIn();
   fft = new p5.FFT();
   fft.setInput(mic);
-  start = new Botão(windowWidth/2, windowHeight - 80, 40, 40);
+
+  button = createButton('Off');
+  button.addClass('button');
+  // button.style('padding', buttonVerticalPadding + "px " + buttonHorizontalPadding + "px " + buttonVerticalPadding + "px " + buttonHorizontalPadding + "px");
+  button.style("text-align", "center");
+  button.style('width', buttonWidth + 'px');
+  button.style('height', buttonHeight + 'px');
+
+  button.addClass('micOff');
+
+  button.mousePressed(playButton);
+
+  // start = new Botão(windowWidth/2, windowHeight - 80, 40, 40);
 
   quantLetra = int(width / 24); // Atribui a quantidade de letras possíveis na tela
   caracteres = new Array(quantLetra);
@@ -53,7 +68,9 @@ function setup() {
 function draw() {
 
   background(255);
-  start.show();
+  // start.show();
+
+  button.position(windowWidth/2 - button.width/2, windowHeight - 80);
   
   if (recording) {
     micLevel = mic.getLevel() * 1000; //multiplica o valor de fAmp por 1000 e coloca em "amp"
@@ -216,21 +233,38 @@ function keyTyped() {
   }
 }
 
-function mouseClicked() {
-
- if(start.isOver) {
-
+function playButton() {
   if (!recording) {
-    start.isActive = true;
     mic.start();
     recording = true;
+    button.html("On")
+    button.removeClass('micOff');
+    button.addClass('micOn');
+
   } else {
-    start.isActive = false;
     mic.stop();
     recording = false;
+    button.html("Off")
+    button.removeClass('micOn');
+    button.addClass('micOff');
   }
- }
 }
+
+// function mouseClicked() {
+
+//  if(start.isOver) {
+
+//   if (!recording) {
+//     start.isActive = true;
+//     mic.start();
+//     recording = true;
+//   } else {
+//     start.isActive = false;
+//     mic.stop();
+//     recording = false;
+//   }
+//  }
+// }
 
 class Letra {
   // Construtor
@@ -289,53 +323,53 @@ class Letra {
   }
 }
 
-class Botão {
-  constructor(tempX, tempY, tempWidth, tempHeight) {
-  this.x = tempX;
-  this.y = tempY;
-  this.width = tempWidth;
-  this.height = tempHeight;
-  this.isOver = false;
-  this.isActive = false;
-  this.translateX = - this.width/2;
-  this.translateY = - this.height/2;
-  this.newX = tempX + this.translateX;
-  this.newY = tempY + this.translateY;
+// class Botão {
+//   constructor(tempX, tempY, tempWidth, tempHeight) {
+//   this.x = tempX;
+//   this.y = tempY;
+//   this.width = tempWidth;
+//   this.height = tempHeight;
+//   this.isOver = false;
+//   this.isActive = false;
+//   this.translateX = - this.width/2;
+//   this.translateY = - this.height/2;
+//   this.newX = tempX + this.translateX;
+//   this.newY = tempY + this.translateY;
 
-  }
+//   }
 
-  show() {
-    this.hoverOn();
-    noStroke();
+//   show() {
+//     this.hoverOn();
+//     noStroke();
 
-    push();
-    translate(this.translateX, this.translateY);
+//     push();
+//     translate(this.translateX, this.translateY);
 
-    if (this.isActive){
-      fill(216, 35, 35);
-      if(this.isOver){
-        fill(180, 35, 35);
-      }
-      rect(this.x, this.y, this.width, this.height);
-    }
+//     if (this.isActive){
+//       fill(216, 35, 35);
+//       if(this.isOver){
+//         fill(180, 35, 35);
+//       }
+//       rect(this.x, this.y, this.width, this.height);
+//     }
 
-    if (!this.isActive){
-      fill(39, 155, 39);
-      if (this.isOver){
-        fill(39, 100, 39);
-      }
+//     if (!this.isActive){
+//       fill(39, 155, 39);
+//       if (this.isOver){
+//         fill(39, 100, 39);
+//       }
       
-      triangle(this.x + 5, this.y, this.x + 40, this.y + 20, this.x + 5, this.y + 40);
-    }
-    pop();   
-  }
+//       triangle(this.x + 5, this.y, this.x + 40, this.y + 20, this.x + 5, this.y + 40);
+//     }
+//     pop();   
+//   }
 
-  hoverOn(){
-      if (((mouseX >= this.newX) && (mouseX <= this.newX+ this.width)) && ((mouseY>= this.newY) && (mouseY <= this.newY + this.height))  ){
-        this.isOver = true;
-      } else {
-        this.isOver = false;
-      }
-  }
+//   hoverOn(){
+//       if (((mouseX >= this.newX) && (mouseX <= this.newX+ this.width)) && ((mouseY>= this.newY) && (mouseY <= this.newY + this.height))  ){
+//         this.isOver = true;
+//       } else {
+//         this.isOver = false;
+//       }
+//   }
 
-}
+// }

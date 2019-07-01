@@ -11,11 +11,13 @@ let recording = false;
 let frequency = 0;
 let micLevel = 0;
 let rotAcel = .1;
+let button;
+let buttonWidth = 80;
+let buttonHeight = 40;
 
 function preload() {
   // Load model with normalise parameter set to true
   teapot = loadModel('assets/soma.obj', true);
-  font = loadFont('assets/Quicksand-Regular.otf');
 }
 
 function setup() {
@@ -26,16 +28,30 @@ function setup() {
   fft = new p5.FFT();
   fft.setInput(mic);
 
+  button = createButton('Off');
+  button.addClass('button');
+  // button.style('padding', buttonVerticalPadding + "px " + buttonHorizontalPadding + "px " + buttonVerticalPadding + "px " + buttonHorizontalPadding + "px");
+  button.style("text-align", "center");
+  button.style('width', buttonWidth + 'px');
+  button.style('height', buttonHeight + 'px');
+
+  button.addClass('micOff');
+
+  button.mousePressed(playButton);
+
+
 }
 
 function draw() {
   background(255);
+
+  button.position(windowWidth/2 - button.width/2, windowHeight - 80);
   
   angleMode(DEGREES);
   colorMode(RGB, 255);
   background(255, 255, 255);
   normalizedScroll = - scroll   
-   pointLight(255, 255, 255, width / 2, height / 2, 800);
+  pointLight(255, 255, 255, width / 2, height / 2, 800);
   // lights();
   fill(255);
 
@@ -53,8 +69,6 @@ function draw() {
       scroll -=.05;
     }
 
-  } else {
-    text('aperte m para ativar o microfone!', windowWidth/2, windowHeight/2);
   }
 
   push();
@@ -77,26 +91,22 @@ function keyTyped() {
     rotZ = 42;
     count = 0;
   }
-
-  if (key.toLowerCase() == "m"){
-    if(!recording){
-      mic.start();
-      recording = true;
-    } else {
-      mic.stop();
-      recording = false;
-    }
-    
-  }
 }
 
-function mouseClicked() {
+function playButton() {
   if (!recording) {
     mic.start();
     recording = true;
+    button.html("On")
+    button.removeClass('micOff');
+    button.addClass('micOn');
+
   } else {
     mic.stop();
     recording = false;
+    button.html("Off")
+    button.removeClass('micOn');
+    button.addClass('micOff');
   }
 }
 

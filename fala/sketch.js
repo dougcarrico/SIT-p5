@@ -26,6 +26,7 @@ let palavraIndex;
 let delayLetra = 0;
 let maxDelayLetra = 5;
 let mostraDados = false;
+let start;
 
 function preload() {
   fontBold = loadFont("assets/OpenSans-Bold.ttf");
@@ -39,7 +40,7 @@ function setup() {
   mic = new p5.AudioIn();
   fft = new p5.FFT();
   fft.setInput(mic);
-  
+  start = new Botão(windowWidth/2, windowHeight - 80, 40, 40);
 
   quantLetra = int(width / 24); // Atribui a quantidade de letras possíveis na tela
   caracteres = new Array(quantLetra);
@@ -52,7 +53,8 @@ function setup() {
 function draw() {
 
   background(255);
-
+  start.show();
+  
   if (recording) {
     micLevel = mic.getLevel() * 1000; //multiplica o valor de fAmp por 1000 e coloca em "amp"
     frequency = 1; //find note function
@@ -150,7 +152,6 @@ function display() {
     if (caracteres[i] != null) {
       caracteres[i].move();
       caracteres[i].show();
-      //println(i +" "+ caracteres[i].letra);
     }
   }
 }
@@ -216,13 +217,19 @@ function keyTyped() {
 }
 
 function mouseClicked() {
+
+ if(start.isOver) {
+
   if (!recording) {
+    start.isActive = true;
     mic.start();
     recording = true;
   } else {
+    start.isActive = false;
     mic.stop();
     recording = false;
   }
+ }
 }
 
 class Letra {
@@ -262,7 +269,7 @@ class Letra {
 
     this.x += 5;
     this.ang += 0.02;
-    this.y = height / 2 + (this.A * (sin(this.ang * this.f)));
+    this.y = (height / 2 + (this.A * (sin(this.ang * this.f)))) ;
     this.t += 1 / frameRate;
   }
 
@@ -280,4 +287,48 @@ class Letra {
       this.f = 10 + frequency / 1000;
     }
   }
+}
+
+class Botão {
+  constructor(tempX, tempY, tempWidth, tempHeight) {
+  
+  this.x = tempX;
+  this.y = tempY;
+  this.width = tempWidth;
+  this.height = tempHeight;
+  this.isOver = false;
+  this.isActive = false;
+
+  }
+
+  show() {
+    this.hoverOn();
+    noStroke();
+
+    if (this.isActive){
+      fill(216, 35, 35);
+      if(this.isOver){
+        fill(180, 35, 35);
+      }
+      rect(this.x, this.y, this.width, this.height);
+      
+    }
+
+    if (!this.isActive){
+      fill(39, 155, 39);
+      if (this.isOver){
+        fill(39, 100, 39);
+      }
+      triangle(this.x + 5, this.y, this.x + 40, this.y + 20, this.x + 5, this.y + 40);
+    }   
+  }
+
+  hoverOn(){
+      if (((mouseX >= this.x) && (mouseX <= this.x + this.width)) && ((mouseY>= this.y) && (mouseY <= this.y + this.height))  ){
+        this.isOver = true;
+      } else {
+        this.isOver = false;
+      }
+  }
+
 }

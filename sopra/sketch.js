@@ -41,7 +41,7 @@ function draw() {
 
 
   if (recording){
-  debugger;  
+  //debugger;  
   micLevel = mic.getLevel()*10;
   frequency = findNote();
 

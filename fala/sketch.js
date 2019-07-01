@@ -44,7 +44,7 @@ function setup() {
   fft = new p5.FFT();
   fft.setInput(mic);
 
-  button = createButton('Off');
+  button = createButton('MIC OFF');
   button.addClass('button');
   // button.style('padding', buttonVerticalPadding + "px " + buttonHorizontalPadding + "px " + buttonVerticalPadding + "px " + buttonHorizontalPadding + "px");
   button.style("text-align", "center");
@@ -237,14 +237,14 @@ function playButton() {
   if (!recording) {
     mic.start();
     recording = true;
-    button.html("On")
+    button.html("MIC ON")
     button.removeClass('micOff');
     button.addClass('micOn');
 
   } else {
     mic.stop();
     recording = false;
-    button.html("Off")
+    button.html("MIC OFF")
     button.removeClass('micOn');
     button.addClass('micOff');
   }

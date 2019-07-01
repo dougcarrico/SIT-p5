@@ -303,7 +303,7 @@ class Letra {
 
     this.x += 5;
     this.ang += 0.02;
-    this.y = (height / 2 + (this.A * (sin(this.ang * this.f)))) ;
+    this.y = height / 2 - (this.A * (sin(this.ang * this.f))) ;
     this.t += 1 / frameRate;
   }
 

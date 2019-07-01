@@ -291,13 +291,16 @@ class Letra {
 
 class Botão {
   constructor(tempX, tempY, tempWidth, tempHeight) {
-  
   this.x = tempX;
   this.y = tempY;
   this.width = tempWidth;
   this.height = tempHeight;
   this.isOver = false;
   this.isActive = false;
+  this.translateX = - this.width/2;
+  this.translateY = - this.height/2;
+  this.newX = tempX + this.translateX;
+  this.newY = tempY + this.translateY;
 
   }
 
@@ -305,13 +308,15 @@ class Botão {
     this.hoverOn();
     noStroke();
 
+    push();
+    translate(this.translateX, this.translateY);
+
     if (this.isActive){
       fill(216, 35, 35);
       if(this.isOver){
         fill(180, 35, 35);
       }
       rect(this.x, this.y, this.width, this.height);
-      
     }
 
     if (!this.isActive){
@@ -319,12 +324,14 @@ class Botão {
       if (this.isOver){
         fill(39, 100, 39);
       }
+      
       triangle(this.x + 5, this.y, this.x + 40, this.y + 20, this.x + 5, this.y + 40);
-    }   
+    }
+    pop();   
   }
 
   hoverOn(){
-      if (((mouseX >= this.x) && (mouseX <= this.x + this.width)) && ((mouseY>= this.y) && (mouseY <= this.y + this.height))  ){
+      if (((mouseX >= this.newX) && (mouseX <= this.newX+ this.width)) && ((mouseY>= this.newY) && (mouseY <= this.newY + this.height))  ){
         this.isOver = true;
       } else {
         this.isOver = false;
